@@ -2,9 +2,24 @@
 
 A personal research reference with **96 compound and product profiles**, grouping **145 source-list lines** from six supplied screenshots into **12 research areas**. The research snapshot is **October 20, 2026**.
 
-**Live private dashboard:** [Open Peptide Research Atlas](https://peptide-research-atlas.ayeyepioneer.chatgpt.site)
+**GitHub Pages address:** [Peptide Research Atlas](https://kkringlen.github.io/peptide-research-atlas/) — available after the one-time Pages setup below.
 
-This repository stores the complete application source, researched catalog, and a directly usable offline edition. It is intended for a private repository owned by `kkringlen`. No collaborators, public hosting, GitHub Pages configuration, or deployment automation are included.
+**Private dashboard with cloud saving:** [Open the existing atlas](https://peptide-research-atlas.ayeyepioneer.chatgpt.site)
+
+This public repository stores the complete application source, researched catalog, a GitHub Pages edition, and a directly usable offline edition. The GitHub Pages edition uses browser-local storage; the existing private dashboard retains its separate cloud database and access controls.
+
+## Enable the public GitHub website
+
+The ready-to-publish website is in `docs/index.html`. No package installation, custom build workflow, or external service is needed for this edition.
+
+1. Open [Settings → Pages](https://github.com/kkringlen/peptide-research-atlas/settings/pages).
+2. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+3. Select branch **main**, folder **/docs**, and click **Save**.
+4. Wait for GitHub's Pages deployment to finish. The website address is **https://kkringlen.github.io/peptide-research-atlas/**.
+
+Publishing updates to `docs/` on `main` updates the public website. The `.nojekyll` file tells GitHub to serve the generated files directly. Repository visibility alone does not activate Pages; the repository owner must enable the publishing source once.
+
+Visitors can search, compare, add profiles, and edit amounts. **Personal changes stay in that browser** and do not update the public website, commit to GitHub, or synchronize across devices. Use **Export data backup** and **Import / merge data** to transfer changes, and keep a backup before clearing browser data. Each visitor starts with the published catalog.
 
 ## Use the atlas
 
@@ -34,6 +49,7 @@ The [initial JSON backup](offline/Peptide_Research_Atlas_Backup.json) can be res
 | `data/catalog.json` | Canonical researched profiles, grouped amounts, and citations |
 | `scripts/generate-catalog.mjs` | Deterministic generator and consistency checker |
 | `app/catalog-html.ts` | Generated HTML module served by the online route |
+| `docs/` | Generated public GitHub Pages edition with browser-local saves |
 | `offline/` | Generated standalone HTML and importable JSON backup |
 | `app/api/catalog/route.ts` | Authenticated catalog loading and revision-controlled saving |
 | `app/chatgpt-auth.ts` | Sites-provided ChatGPT identity helpers |
@@ -69,11 +85,13 @@ node scripts/generate-catalog.mjs
 node scripts/generate-catalog.mjs --check
 ```
 
-Generation validates IDs, data types, evidence categories, source URLs, and limits compatible with the interface and API. It safely embeds JSON, checks application JavaScript syntax, and writes these three deterministic outputs:
+Generation validates IDs, data types, evidence categories, source URLs, and limits compatible with the interface and API. It safely embeds JSON, checks application JavaScript syntax, and writes these five deterministic outputs:
 
 - `app/catalog-html.ts`
 - `offline/Peptide_Research_Atlas_Offline.html`
 - `offline/Peptide_Research_Atlas_Backup.json`
+- `docs/index.html`
+- `docs/.nojekyll`
 
 `--check` reports missing or stale outputs and exits unsuccessfully if any differ; it does not create or change files. Commit canonical source and regenerated outputs together. Do not edit the generated files directly.
 
@@ -111,7 +129,7 @@ The existing private live atlas remains hosted through **Sites**. Its complete o
 
 The retained `.openai/hosting.json` documents the original deployment identity, `appgprj_6ad83f02d43081919ff4e34b6aaf7eab`. It is configuration, not a credential. Changing a Git remote or pushing this repository does **not** automatically update the existing Site. Publishing requires the supported Sites workflow and appropriate account access.
 
-**GitHub stores the source; GitHub Pages does not run this application's Worker/D1 API or provide the same private Sites sign-in.** A standalone HTML file can operate as a static local catalog, but that is a separate hosting mode with local persistence. Repository privacy alone does not reproduce the live Site's access controls. No automatic public hosting is configured.
+**GitHub Pages serves the static edition and does not run this application's Worker/D1 API or provide the same private Sites sign-in.** The generator explicitly disables cloud API calls in `docs/index.html` and the standalone offline edition. Their edits remain local to the browser. Repository visibility and Pages settings do not change the private dashboard's access controls or publish its stored user data.
 
 A migration to a different full-stack host would require deliberate replacements for the database binding and trusted authentication layer. Do not treat caller-supplied identity headers as authenticated users on an unrelated host.
 
